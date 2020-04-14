@@ -37,30 +37,30 @@ Docker-LNMP
 ```shell
 # 安装docker和docker-compose 
 	## linux
-	yum -y install epel-release 
-	yum -y install docker docker-compose
-	启动docker服务 service docker start
+		yum -y install epel-release 
+		yum -y install docker docker-compose
+		启动docker服务 service docker start
 	
 	## mac
-	直接安装终端软件
+		直接安装终端软件
 
 # 配置阿里云docker镜像加速器(建议配置加速器, 可以提升docker拉取镜像的速度)
-linux:
-	mkdir -p /etc/docker
-	vim /etc/docker/daemon.json
-	# 新增下面内容
-	{
-	    "registry-mirrors": ["https://8auvmfwy.mirror.aliyuncs.com"]
-	}
-	# 重新加载配置、重启docker
-	systemctl daemon-reload 
-	systemctl restart docker 
+	##linux:
+		mkdir -p /etc/docker
+		vim /etc/docker/daemon.json
+		# 新增下面内容
+		{
+		    "registry-mirrors": ["https://8auvmfwy.mirror.aliyuncs.com"]
+		}
+		# 重新加载配置、重启docker
+		systemctl daemon-reload 
+		systemctl restart docker 
 
-macox:
-	在perferences里面进行配置
-	{
-	    "registry-mirrors": ["https://8auvmfwy.mirror.aliyuncs.com"]
-	}
+	##macox:
+		在perferences里面进行配置
+		{
+		    "registry-mirrors": ["https://8auvmfwy.mirror.aliyuncs.com"]
+		}
 
 ```
 
