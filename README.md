@@ -10,7 +10,7 @@
 - Redis:3.0/(redis:3.0.6)
 - memcached:1.4.14/(memcached:1.4.23)
 - elasticsearch:5.5.3/(elasticsearch:5.5.2)
-- kibana/(kibana:6.8.8)
+- kibana/(kibana:5.5.2)
 
 ### 目录结构
 ```
