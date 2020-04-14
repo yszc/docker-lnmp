@@ -90,7 +90,7 @@ Creating kibana ...
 	一 安装php的extsion
 		docker exec -it cgi /bin/bash
 		apt-get update
-		apt-get install -y php5-mysql php5-gd php5-redis
+		apt-get install -y php5-mysql php5-gd php5-redis php5-memcache
 
 		重启php
 		docker restart cgi
@@ -117,12 +117,25 @@ Creating kibana ...
 		root  
 		root
 
+	六  开发环境代码的各种服务host配置
+		mysql
+		redis
+		elasticserach
+		memcached
+
 ### 学习文档
 - [如何新建一个站点](docs/如何新建一个站点.md)
 - [如何安装yaf扩展](docs/如何安装yaf扩展.md)
 - [如何安装swoole扩展](docs/如何安装swoole扩展.md)
 
 ### 可能遇到的问题
+```bash
+#localhost浏览器打开提示: Error 1: could not find driver
+
+此情况是，php没有装扩展,参考上面的php扩展安装
+
+```
+
 ```bash
 # Error信息
 The "https://packagist.phpcomposer.com/packages.json" file could not be down

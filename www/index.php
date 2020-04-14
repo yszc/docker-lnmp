@@ -1,7 +1,9 @@
 <?php
 // Docker-LNMP
+ini_set("error_reporting", E_ALL);
+ini_set("display_errors", 1);
 try {
-	$dbh = new PDO('mysql:host=mysql;dbname=mysql', 'root', root);
+	$dbh = new PDO('mysql:host=mysql;dbname=mysql', 'root', 'root');
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->exec('SET CHARACTER SET utf8');
 	$dbh = null; 	
@@ -20,5 +22,12 @@ if ($result) {
 // $redis->auth('123456');
 $redis->set('key1', 'val1');
 echo '<center><h2>Set Redis: key1 = ' . $redis->get('key1') . '</h2></center>' . PHP_EOL;
+
+$mm = memcache_connect('memcached' , 11211);
+if($mm){
+	echo '<center><h2>成功通过 PHP 连接到 memcached </h2></center>' . PHP_EOL;
+}
+$mm->set("key1" , 1);
+echo '<center><h2>Set mm: key1 = ' . $redis->get('key1') . '</h2></center>' . PHP_EOL;
 
 phpinfo();
