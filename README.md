@@ -1,15 +1,16 @@
 # Docker-LNMP-YDT
 利用 Docker-Compose 编排 LNMP + es + redis + memcached 开发环境  
 
-### 清单
+### 清单 
 > 注: 没有加版本号，说明没有指定的版本要求
-- php:5.6.4
-- Nginx
-- MySQL:5.6
-- Redis:3.0
-- memcached:1.4.14
-- elasticsearch:5.5.3
-- kibana
+- 服务:版本/(镜像)
+- php:5.6.4/(phpdockerio/php56-fpm)
+- Nginx/(nginx:1.17.9)
+- MySQL:5.6/(daocloud.io/library/mysql:5.6)
+- Redis:3.0/(redis:3.0.6)
+- memcached:1.4.14/(memcached:1.4.23)
+- elasticsearch:5.5.3/(elasticsearch:5.5.2)
+- kibana/(kibana:6.8.8)
 
 ### 目录结构
 ```
@@ -30,7 +31,7 @@ Docker-LNMP
 |----www                                应用根目录
 |--------index.php                      PHP数据和redis链接测试
 |----README.md                          说明文件
-|----docker-compose.yml                 docker compose 配置文件 
+|----docker-compose-ydt.yml             docker compose 配置文件 
 ```
 ### 准备
 ```shell
@@ -100,14 +101,19 @@ Creating kibana ...
 		重启es
 		docker restart elasticserach
 
-	三  配置/日志/代码 文件
+	三  kibana汉化
+		vim config/kibana.yml
+		搜索 locale一行
+		去掉#，并将"en"改成"zh-CN"
+
+	四  配置/日志/代码 文件
 
 		配置文件在 ./docker/config/
 		日志文件在 ./docker/log/
 		数据文件在 ./docker/data/
 		代码在    ./www 
 
-	四  mysql的账号密码
+	五  mysql的账号密码
 		root  
 		root
 
