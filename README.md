@@ -71,7 +71,7 @@ git clone git@gitlab.com:yidoutang/qee-docker.git
 # 进入目录
 cd qee-docker
 # 容器编排
-docker-compose -f docker-compose-ydt.yml up -d
+docker-compose up -d
 ```
 ### 测试
 执行成功
