@@ -1,7 +1,7 @@
 <?php
 // Docker-LNMP
 try {
-	$dbh = new PDO('mysql:host=mysql1;dbname=mysql', 'root', root);
+	$dbh = new PDO('mysql:host=mysql;dbname=mysql', 'root', root);
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->exec('SET CHARACTER SET utf8');
 	$dbh = null; 	
