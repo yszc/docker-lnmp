@@ -1,4 +1,4 @@
-version: '3'
+version: '1.0.0'
 
 services:
   cgi:
@@ -15,15 +15,15 @@ services:
       - mysql
       - redis
       - elasticsearch
-      - memcache
+      - memcached
     links:
       - mysql:mysql
       - redis:redis
       - elasticsearch:elasticsearch
-      - memcache:memcache
+      - memcached:memcached
   proxy:
     container_name: proxy
-    image: registry.cn-beijing.aliyuncs.com/duiying/nginx:1.0
+    image: nginx:1.17.9
     tty: true
     restart: always
     ports:
@@ -51,7 +51,7 @@ services:
       - MYSQL_ROOT_PASSWORD=root
   redis:
     container_name: redis
-    image: daocloud.io/library/redis
+    image: redis:3.0.6
     restart: always
     expose:
       - "6379"
@@ -62,7 +62,7 @@ services:
     command: redis-server --appendonly yes
   elasticsearch:
     container_name: elasticsearch
-    image: elasticsearch
+    image: elasticsearch:5.5.2
     restart: always
     expose:
       - "9200"
@@ -74,8 +74,8 @@ services:
       - ./docker/config/elasticsearch:/etc/elasticsearch
       - ./docker/data/elasticsearch:/usr/share/elasticsearch/data
   memcache:
-    container_name: memcache
-    image: memcached
+    container_name: memcached
+    image: memcached:1.4.23
     restart: always
     expose:
       - "11211"
@@ -85,43 +85,9 @@ services:
       - ./docker/data/memcached:/data
   kibana:
     container_name: kibana
-    image: kibana
+    image: kibana:6.8.8
     restart: always
     expose:
       - "5601"
     ports:
       - "5601:5601"
-    volumes:
-      - ./docker/data/redis:/data
-    command: redis-server --appendonly yes
-  phpmyadmin:
-    container_name: phpmyadmin
-    image: daocloud.io/daocloud/phpmyadmin
-    expose:
-      - '80'
-    ports:
-      - "8080:80"
-    environment:
-      - PMA_ARBITRARY=0
-      - PMA_HOST=mysql
-      # 如果取消下面两行注释, phpmyadmin就不用输入用户名和密码, 可以直接登录
-      # - PMA_USER=root
-      # - PMA_PASSWORD=root
-    depends_on:
-      - mysql
-    links:
-      - mysql:mysql
-  phpredisadmin:
-    container_name: phpredisadmin
-    image: erikdubbelboer/phpredisadmin
-    expose:
-      - '80'
-    ports:
-      - "8081:80"
-    environment:
-      - REDIS_1_HOST=redis
-      - REDIS_1_NAME=redis
-    depends_on:
-      - redis
-    links:
-      - redis:redis
