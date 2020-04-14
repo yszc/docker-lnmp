@@ -3,7 +3,7 @@ version: '3'
 services:
   cgi:
     container_name: cgi
-    image: registry.cn-beijing.aliyuncs.com/duiying/php7.2:1.0
+    image: phpdockerio/php56-fpm
     tty: true
     restart: always
     expose:
@@ -14,9 +14,13 @@ services:
     depends_on:
       - mysql
       - redis
+      - elasticsearch
+      - memcache
     links:
       - mysql:mysql
       - redis:redis
+      - elasticsearch:elasticsearch
+      - memcache:memcache
   proxy:
     container_name: proxy
     image: registry.cn-beijing.aliyuncs.com/duiying/nginx:1.0
@@ -55,7 +59,41 @@ services:
       - "6379:6379"
     volumes:
       - ./docker/data/redis:/data
-    command: redis-server --appendonly yes 
+    command: redis-server --appendonly yes
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch
+    restart: always
+    expose:
+      - "9200"
+      - "9300"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ./docker/config/elasticsearch:/etc/elasticsearch
+      - ./docker/data/elasticsearch:/usr/share/elasticsearch/data
+  memcache:
+    container_name: memcache
+    image: memcached
+    restart: always
+    expose:
+      - "11211"
+    ports:
+      - "11211:11211"
+    volumes:
+      - ./docker/data/memcached:/data
+  kibana:
+    container_name: kibana
+    image: kibana
+    restart: always
+    expose:
+      - "5601"
+    ports:
+      - "5601:5601"
+    volumes:
+      - ./docker/data/redis:/data
+    command: redis-server --appendonly yes
   phpmyadmin:
     container_name: phpmyadmin
     image: daocloud.io/daocloud/phpmyadmin
