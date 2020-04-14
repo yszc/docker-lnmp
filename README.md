@@ -96,8 +96,8 @@ Creating kibana ...
 		docker restart cgi
 
 	二 elasticserach安装ik中文插件
-		由于docker的elasticsearch镜像是5.6.12,下载对应版本的ik，复制到对应的plugins目录即可
-		https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v5.6.12/elasticsearch-analysis-ik-5.6.12.zip
+		由于docker的elasticsearch镜像是5.5.2,下载对应版本的ik，复制到对应的plugins目录即可
+		https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v5.5.2/elasticsearch-analysis-ik-5.5.2.zip
 		重启es
 		docker restart elasticserach
 
