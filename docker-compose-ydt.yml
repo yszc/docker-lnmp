@@ -1,4 +1,4 @@
-version: '1.0.0'
+version: '3'
 
 services:
   cgi:
@@ -73,7 +73,7 @@ services:
     volumes:
       - ./docker/config/elasticsearch:/etc/elasticsearch
       - ./docker/data/elasticsearch:/usr/share/elasticsearch/data
-  memcache:
+  memcached:
     container_name: memcached
     image: memcached:1.4.23
     restart: always
