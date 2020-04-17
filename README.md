@@ -49,7 +49,7 @@ Docker-LNMP
 		vim /etc/docker/daemon.json
 		# 新增下面内容
 		{
-		    "registry-mirrors": ["https://8auvmfwy.mirror.aliyuncs.com"]
+			"registry-mirrors": ["https://8auvmfwy.mirror.aliyuncs.com"]
 		}
 		# 重新加载配置、重启docker
 		systemctl daemon-reload 
@@ -58,7 +58,7 @@ Docker-LNMP
 	##docker-desktop:
 		在perferences里面进行配置
 		{
-		    "registry-mirrors": ["https://8auvmfwy.mirror.aliyuncs.com"]
+			"registry-mirrors": ["https://8auvmfwy.mirror.aliyuncs.com"]
 		}
 
 ```
@@ -87,49 +87,49 @@ Creating kibana ...
 
 ### 额外配置
 
-*  配置/日志/代码 文件
-	配置文件在 ./docker/config/
-	日志文件在 ./docker/log/
-	数据文件在 ./docker/data/
-	代码在    ./www 
+	*  配置/日志/代码 文件
+		配置文件在 ./docker/config/
+		日志文件在 ./docker/log/
+		数据文件在 ./docker/data/
+		代码在    ./www 
 
-*  mysql的账号密码
-	root  
-	root
+	*  mysql的账号密码
+		root  
+		root
 
-*  MySQL数据迁移示例
-	导出： mysqldump -u root -p ydt > ydt.sql
-	导入： 将dump文件放在share文件夹中
-		  进入MySQL容器
-		  终端连接 mysql -u root -p 
-		  > create database ydt;
-		  > use ydt;
-		  > source /data/ydt.sql;
+	*  MySQL数据迁移示例
+		导出： mysqldump -u root -p ydt > ydt.sql
+		导入： 将dump文件放在share文件夹中
+			  进入MySQL容器
+			  终端连接 mysql -u root -p 
+			  > create database ydt;
+			  > use ydt;
+			  > source /data/ydt.sql;
 
-*  各种服务均无法使用127.0.0.1或localhost，应该替换为以下host
-    fpm => cgi
-    nginx => proxy
-	mysql=>mysql
-	redis=>redis
-	elasticserach=>elasticsearch
-	memcached=>memcached
-	
-*  elasticserach安装ik中文插件
-	由于docker的elasticsearch镜像是5.5.2,下载对应版本的ik，复制到对应的plugins目录即可
-	https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v5.5.2/elasticsearch-analysis-ik-5.5.2.zip
-	重启es
-	docker restart elasticserach
+	*  各种服务均无法使用127.0.0.1或localhost，应该替换为以下host
+		fpm => cgi
+		nginx => proxy
+		mysql=>mysql
+		redis=>redis
+		elasticserach=>elasticsearch
+		memcached=>memcached
+		
+	*  elasticserach安装ik中文插件
+		由于docker的elasticsearch镜像是5.5.2,下载对应版本的ik，复制到对应的plugins目录即可
+		https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v5.5.2/elasticsearch-analysis-ik-5.5.2.zip
+		重启es
+		docker restart elasticserach
 
-*  kibana汉化
-	vim config/kibana.yml
-	搜索 locale一行
-	去掉#，并将"en"改成"zh-CN"
+	*  kibana汉化
+		vim config/kibana.yml
+		搜索 locale一行
+		去掉#，并将"en"改成"zh-CN"
 
 ### 如何加入新项目
 	
 	1. 将PHP项目放在www文件夹，注意修改代码配置中各种服务的host
 	1. nginx配置文件放在docker/config/proxy/conf.d下，注意修改fpm的host。
- 	1. 亦可无须添加nginx配置直接通过localhost/dir访问
+	1. 亦可无须添加nginx配置直接通过localhost/dir访问
 
 ### 学习文档
 - [如何新建一个站点](docs/如何新建一个站点.md)
