@@ -14,10 +14,12 @@ services:
     depends_on:
       - mysql
       - redis
+      - elasticsearch
       - memcached
     links:
       - mysql:mysql
       - redis:redis
+      - elasticsearch:elasticsearch
       - memcached:memcached
   proxy:
     container_name: proxy
@@ -45,7 +47,6 @@ services:
       - "3306:3306"
     volumes:
       - ./docker/data/mysql:/var/lib/mysql
-      - ./share:/data
     environment:
       - MYSQL_ROOT_PASSWORD=root
   redis:
@@ -59,6 +60,19 @@ services:
     volumes:
       - ./docker/data/redis:/data
     command: redis-server --appendonly yes
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:5.5.2
+    restart: always
+    expose:
+      - "9200"
+      - "9300"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ./docker/config/elasticsearch:/etc/elasticsearch
+      - ./docker/data/elasticsearch:/usr/share/elasticsearch/data
   memcached:
     container_name: memcached
     image: memcached:1.4.23
@@ -69,3 +83,15 @@ services:
       - "11211:11211"
     volumes:
       - ./docker/data/memcached:/data
+  kibana:
+    container_name: kibana
+    image: kibana:5.5.2
+    restart: always
+    expose:
+      - "5601"
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch
