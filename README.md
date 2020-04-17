@@ -100,7 +100,7 @@ Creating kibana ...
 	*  MySQL数据迁移示例
 		导出： mysqldump -u root -p ydt > ydt.sql
 		导入： 将dump文件放在share文件夹中
-			  进入MySQL容器
+			  进入MySQL容器 docker exec -it mysql /bin/bash
 			  终端连接 mysql -u root -p 
 			  > create database ydt;
 			  > use ydt;
@@ -166,6 +166,8 @@ docker network disconnect --force docker-lnmp_default mysql
 
 ### Docker常用命令
 ```shell
+#进入某个容器
+docker exec -it mysql /bin/bash
 # 删除所有容器
 docker rm -f $(docker ps -aq)  
 # 删除所有镜像
