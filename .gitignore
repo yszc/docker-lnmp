@@ -1,2 +1,2 @@
-./data/*
-./log/*
+docker/data/*
+docker/log/*
