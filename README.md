@@ -22,16 +22,14 @@ Docker-LNMP
 |------------cgi                        php-fpm DockerFile文件目录
 |----------------Dockerfile             php-fpm DockerFile文件
 |----------------docker-entrypoint.sh   php-fpm 启动脚本
-|------------proxy                      nginx DockerFile文件目录
-|----------------Dockerfile             nginx DockerFile文件
-|----------------docker-entrypoint.sh   nginx 启动脚本
 |--------log                            日志文件目录
 |------------cgi                        php-fpm日志文件目录
 |------------proxy                      nginx日志文件目录
 |----www                                应用根目录
-|--------index.php                      PHP数据和redis链接测试
+|--------ydtapi                         API项目
+|--------ydt                            web项目
 |----README.md                          说明文件
-|----docker-compose-ydt.yml             docker compose 配置文件 
+|----docker-compose.yml                 docker compose 配置文件 
 ```
 ### 准备
 ```shell
@@ -41,8 +39,9 @@ Docker-LNMP
 		yum -y install docker docker-compose
 		启动docker服务 service docker start
 	
-	## mac
-		直接安装终端软件
+	## mac, windows
+		安装docker-desktop
+		https://www.docker.com/products/docker-desktop
 
 # 配置阿里云docker镜像加速器(建议配置加速器, 可以提升docker拉取镜像的速度)
 	##linux:
@@ -56,7 +55,7 @@ Docker-LNMP
 		systemctl daemon-reload 
 		systemctl restart docker 
 
-	##macox:
+	##docker-desktop:
 		在perferences里面进行配置
 		{
 		    "registry-mirrors": ["https://8auvmfwy.mirror.aliyuncs.com"]
@@ -87,41 +86,50 @@ Creating kibana ...
 访问localhost即可
 
 ### 额外配置
-	一 安装php的extsion
-		docker exec -it cgi /bin/bash
-		apt-get update
-		apt-get install -y php5-mysql php5-gd php5-redis php5-memcache
 
-		重启php
-		docker restart cgi
+*  配置/日志/代码 文件
+	配置文件在 ./docker/config/
+	日志文件在 ./docker/log/
+	数据文件在 ./docker/data/
+	代码在    ./www 
 
-	二 elasticserach安装ik中文插件
-		由于docker的elasticsearch镜像是5.5.2,下载对应版本的ik，复制到对应的plugins目录即可
-		https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v5.5.2/elasticsearch-analysis-ik-5.5.2.zip
-		重启es
-		docker restart elasticserach
+*  mysql的账号密码
+	root  
+	root
 
-	三  kibana汉化
-		vim config/kibana.yml
-		搜索 locale一行
-		去掉#，并将"en"改成"zh-CN"
+*  MySQL数据迁移示例
+	导出： mysqldump -u root -p ydt > ydt.sql
+	导入： 将dump文件放在share文件夹中
+		  进入MySQL容器
+		  终端连接 mysql -u root -p 
+		  > create database ydt;
+		  > use ydt;
+		  > source /data/ydt.sql;
 
-	四  配置/日志/代码 文件
+*  各种服务均无法使用127.0.0.1或localhost，应该替换为以下host
+    fpm => cgi
+    nginx => proxy
+	mysql=>mysql
+	redis=>redis
+	elasticserach=>elasticsearch
+	memcached=>memcached
+	
+*  elasticserach安装ik中文插件
+	由于docker的elasticsearch镜像是5.5.2,下载对应版本的ik，复制到对应的plugins目录即可
+	https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v5.5.2/elasticsearch-analysis-ik-5.5.2.zip
+	重启es
+	docker restart elasticserach
 
-		配置文件在 ./docker/config/
-		日志文件在 ./docker/log/
-		数据文件在 ./docker/data/
-		代码在    ./www 
+*  kibana汉化
+	vim config/kibana.yml
+	搜索 locale一行
+	去掉#，并将"en"改成"zh-CN"
 
-	五  mysql的账号密码
-		root  
-		root
-
-	六  开发环境代码的各种服务host配置
-		mysql
-		redis
-		elasticserach
-		memcached
+### 如何加入新项目
+	
+	1. 将PHP项目放在www文件夹，注意修改代码配置中各种服务的host
+	1. nginx配置文件放在docker/config/proxy/conf.d下，注意修改fpm的host。
+ 	1. 亦可无须添加nginx配置直接通过localhost/dir访问
 
 ### 学习文档
 - [如何新建一个站点](docs/如何新建一个站点.md)
@@ -129,12 +137,7 @@ Creating kibana ...
 - [如何安装swoole扩展](docs/如何安装swoole扩展.md)
 
 ### 可能遇到的问题
-```bash
-#localhost浏览器打开提示: Error 1: could not find driver
 
-此情况是，php没有装扩展,参考上面的php扩展安装
-
-```
 
 ```bash
 # Error信息
@@ -158,6 +161,7 @@ docker network disconnect --force docker-lnmp_default mysql
 - cgi容器支持crontab
 - PHP支持rdkafka扩展
 - PHP支持POSIX、PCNTL扩展
+- 自动安装php扩展
 - 新增学习文档
 
 ### Docker常用命令
