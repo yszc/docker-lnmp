@@ -66,7 +66,7 @@ Docker-LNMP
 ### 安装
 ```shell
 # 克隆项目
-git clone git@gitlab.com:yidoutang/qee-docker.git
+git clone git@codeup.aliyun.com:ydt/yidoutang/docker-lnmp.git
 # 进入目录
 cd qee-docker
 # 容器编排
