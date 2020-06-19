@@ -29,7 +29,9 @@ Docker-LNMP
 |--------ydtapi                         API项目
 |--------ydt                            web项目
 |----README.md                          说明文件
-|----docker-compose.yml                 docker compose 配置文件 
+|----docker-compose.yml                 基础版配置文件 
+|----docker-compose-full.yaml           完整版配置文件 
+|----docker-compose-simple.yaml         *极简版配置文件(推荐) 
 ```
 ### 准备
 ```shell
@@ -71,6 +73,7 @@ git clone git@codeup.aliyun.com:ydt/yidoutang/docker-lnmp.git
 cd qee-docker
 # 容器编排
 docker-compose up -d
+docker-compose -f docker-compose-simple.yaml up -d
 ```
 ### 测试
 执行成功
