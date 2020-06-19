@@ -14,8 +14,6 @@ services:
     volumes:
       - ./www:/data/www
       - ./docker/log/cgi:/var/log/php-fpm
-    links:
-      - memcached:memcached
     networks:
       - lan_access
       - default
