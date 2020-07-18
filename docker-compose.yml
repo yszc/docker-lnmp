@@ -1,16 +1,16 @@
 version: '3'
 
 services:
-  cgi:
-    container_name: cgi
-    build: ./docker/files/cgi
+  php:
+    container_name: php
+    build: ./docker/files/php
     tty: true
     restart: always
     expose:
       - "9000"
     volumes:
       - ./www:/data/www
-      - ./docker/log/cgi:/var/log/php-fpm
+      - ./docker/log/php:/var/log/php-fpm
     depends_on:
       - mysql
       - redis
@@ -19,8 +19,8 @@ services:
       - mysql:mysql
       - redis:redis
       - memcached:memcached
-  proxy:
-    container_name: proxy
+  nginx:
+    container_name: nginx
     image: nginx:1.17.9
     tty: true
     restart: always
@@ -29,12 +29,11 @@ services:
       - "443:443"
     volumes:
       - ./www:/data/www
-      - ./docker/config/proxy/conf.d:/etc/nginx/conf.d
-      - ./docker/log/proxy:/var/log/nginx
+      - ./docker/config/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
-      - cgi
+      - php
     links:
-      - cgi
+      - php
   mysql:
     container_name: mysql
     image: daocloud.io/library/mysql:5.6
