@@ -11,14 +11,6 @@ services:
     volumes:
       - ./www:/data/www
       - ./docker/log/php:/var/log/php-fpm
-    depends_on:
-      - mysql
-      - redis
-      - memcached
-    links:
-      - mysql:mysql
-      - redis:redis
-      - memcached:memcached
   nginx:
     container_name: nginx
     image: nginx:1.17.9
