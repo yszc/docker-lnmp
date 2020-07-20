@@ -1,4 +1,7 @@
 version: '3'
+networks:
+  lan_access:
+    driver: bridge
 
 services:
   php:
@@ -11,6 +14,10 @@ services:
     volumes:
       - ./www:/data/www
       - ./docker/log/php:/var/log/php-fpm
+    networks:
+      - lan_access
+      - default
+
   nginx:
     container_name: nginx
     image: nginx:1.17.9
@@ -26,6 +33,10 @@ services:
       - php
     links:
       - php
+    networks:
+      - lan_access
+      - default
+
   mysql:
     container_name: mysql
     image: daocloud.io/library/mysql:5.6

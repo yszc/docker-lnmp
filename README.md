@@ -15,13 +15,13 @@
 Docker-LNMP
 |----docker                             Docker目录
 |--------config                         配置文件目录
-|------------proxy                      nginx配置文件目录
+|------------nginx                      nginx配置文件目录
 |--------files                          DockerFile文件目录
 |------------php                        php-fpm DockerFile文件目录
 |----------------Dockerfile             php-fpm DockerFile文件
 |--------log                            日志文件目录
-|------------cgi                        php-fpm日志文件目录
-|------------proxy                      nginx日志文件目录
+|------------php                        php-fpm日志文件目录
+|------------nginx                      nginx日志文件目录
 |----www                                应用根目录
 |----share                              宿主机共享文件夹
 |----README.md                          说明文件
@@ -100,8 +100,8 @@ Creating kibana ...
 			  > source /data/ydt.sql;
 
 	*  各种服务均无法使用127.0.0.1或localhost，应该替换为以下host
-		fpm => cgi
-		nginx => proxy
+		fpm => php
+		nginx => nginx
 		mysql=>mysql
 		redis=>redis
 		elasticserach=>elasticsearch
@@ -110,7 +110,7 @@ Creating kibana ...
 ### 如何加入新项目
 	
 	1. 将PHP项目放在www文件夹，注意修改代码配置中各种服务的host
-	1. nginx配置文件放在docker/config/proxy/conf.d下，注意修改fpm的host。
+	1. nginx配置文件放在docker/config/nginx/conf.d下，注意修改fpm的host。
 	1. 亦可无须添加nginx配置直接通过localhost/dir访问
 
 ### 可能遇到的问题
