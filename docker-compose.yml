@@ -4,9 +4,23 @@ networks:
     driver: bridge
 
 services:
-  php:
-    container_name: php
-    build: ./docker/files/php
+  php5:
+    container_name: php5
+    build: ./docker/files/php5
+    tty: true
+    restart: always
+    expose:
+      - "9000"
+    volumes:
+      - ./www:/data/www
+      - ./docker/log/php:/var/log/php-fpm
+    networks:
+      - lan_access
+      - default
+
+  php7:
+    container_name: php7
+    build: ./docker/files/php7
     tty: true
     restart: always
     expose:
@@ -30,16 +44,18 @@ services:
       - ./www:/data/www
       - ./docker/config/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
-      - php
+      - php5
+      - php7
     links:
-      - php
+      - php5
+      - php7
     networks:
       - lan_access
       - default
 
   mysql:
     container_name: mysql
-    image: daocloud.io/library/mysql:5.6
+    image: mysql:5.6
     restart: always
     expose:
       - "3306"
