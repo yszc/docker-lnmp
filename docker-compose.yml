@@ -43,12 +43,6 @@ services:
     volumes:
       - ./www:/data/www
       - ./docker/config/nginx/conf.d:/etc/nginx/conf.d
-    depends_on:
-      - php5
-      - php7
-    links:
-      - php5
-      - php7
     networks:
       - lan_access
       - default
