@@ -8,7 +8,7 @@ services:
     container_name: php5
     build: ./docker/files/php5
     tty: true
-    restart: always
+    restart: unless-stopped
     expose:
       - "9000"
     volumes:
@@ -22,7 +22,7 @@ services:
     container_name: php7
     build: ./docker/files/php7
     tty: true
-    restart: always
+    restart: unless-stopped
     expose:
       - "9000"
     volumes:
@@ -36,7 +36,7 @@ services:
     container_name: nginx
     image: nginx:1.17.9
     tty: true
-    restart: always
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
@@ -46,9 +46,6 @@ services:
     depends_on:
       - php5
       - php7
-    links:
-      - php5
-      - php7
     networks:
       - lan_access
       - default
@@ -56,7 +53,7 @@ services:
   mysql:
     container_name: mysql
     image: mysql:5.6
-    restart: always
+    restart: unless-stopped
     expose:
       - "3306"
     ports:
@@ -69,7 +66,7 @@ services:
   redis:
     container_name: redis
     image: redis:3.0.6
-    restart: always
+    restart: unless-stopped
     expose:
       - "6379"
     ports:
@@ -80,7 +77,7 @@ services:
   memcached:
     container_name: memcached
     image: memcached:1.4.23
-    restart: always
+    restart: unless-stopped
     expose:
       - "11211"
     ports:
