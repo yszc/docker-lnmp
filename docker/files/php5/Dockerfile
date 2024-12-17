@@ -13,3 +13,6 @@ RUN apk add --no-cache \
     && pecl install redis-3.1.6 \
     && docker-php-ext-enable redis \
     && rm -rf /tmp/* /var/cache/apk/*
+    
+# RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
