@@ -1,5 +1,5 @@
 # Docker-LNMP
-利用 Docker-Compose 编排 LNMP + redis + memcached 开发环境  
+利用 Docker-Compose 编排 LNMP + redis 开发环境  
 
 ### 清单 
 > 注: 没有加版本号，说明没有指定的版本要求
@@ -8,7 +8,6 @@
 - Nginx/(nginx:1.17.9)
 - MySQL:5.6/(daocloud.io/library/mysql:5.6)
 - Redis:3.0/(redis:3.0.6)
-- memcached:1.4.14/(memcached:1.4.23)
 
 ### 目录结构
 ```
@@ -39,20 +38,23 @@ Docker-LNMP
 		yum -y install docker docker-compose
 		启动docker服务 service docker start
 
-# 配置阿里云docker镜像加速器(建议配置加速器, 可以提升docker拉取镜像的速度)
-	##docker-desktop:
-		在perferences里面进行配置
+# 推荐配置镜像加速器(可以提升docker拉取镜像的速度)
 		{
-			"registry-mirrors": ["https://8auvmfwy.mirror.aliyuncs.com"]
+			"registry-mirrors": [
+				"https://dockercf.jsdelivr.fyi",
+				"https://docker-cf.registry.cyou",
+				"https://dockercf.jsdelivr.fyi",
+				"https://docker.1panel.live",
+				"https://docker.chenby.cn"
+			]
 		}
+	##docker-desktop:
+		在perferences > Docker Engine 里面进行配置
 
 	##linux:
 		mkdir -p /etc/docker
 		vim /etc/docker/daemon.json
-		# 新增下面内容
-		{
-			"registry-mirrors": ["https://8auvmfwy.mirror.aliyuncs.com"]
-		}
+		# 编辑配置
 		# 重新加载配置、重启docker
 		systemctl daemon-reload 
 		systemctl restart docker 
@@ -104,8 +106,7 @@ Creating kibana ...
 		nginx => nginx
 		mysql=>mysql
 		redis=>redis
-		elasticserach=>elasticsearch
-		memcached=>memcached
+
 		
 ### 如何加入新项目
 	
@@ -120,11 +121,7 @@ Creating kibana ...
 # Error信息
 ERROR: for mysql  Cannot start service mysql: endpoint with name mysql already exists in network docker-lnmp_default
 # 解决方案
-这是由于端口被占用，需要清理此容器的网络占用
-格式：docker network disconnect --force 网络模式 容器名称
-docker network disconnect --force docker-lnmp_default mysql
-检查是否还有其它容器占用
-格式：docker network inspect 网络模式
+这是由于端口被占用，需要修改外部端口映射
 ```
 
 ### Docker常用命令
