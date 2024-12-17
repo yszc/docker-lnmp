@@ -1,6 +1,6 @@
 version: '3'
 networks:
-  lan_access:
+  lnmp-net:
     driver: bridge
 
 services:
@@ -15,8 +15,7 @@ services:
       - ./www:/data/www
       - ./docker/log/php:/var/log/php-fpm
     networks:
-      - lan_access
-      - default
+      - lnmp-net
 
   php7:
     container_name: php7
@@ -29,8 +28,7 @@ services:
       - ./www:/data/www
       - ./docker/log/php:/var/log/php-fpm
     networks:
-      - lan_access
-      - default
+      - lnmp-net
 
   nginx:
     container_name: nginx
@@ -44,11 +42,10 @@ services:
       - ./www:/data/www
       - ./docker/config/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
-      - php5
+      # - php5
       - php7
     networks:
-      - lan_access
-      - default
+      - lnmp-net
 
   mysql:
     container_name: mysql
@@ -63,9 +60,12 @@ services:
       - ./share:/data
     environment:
       - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - lnmp-net
+
   redis:
     container_name: redis
-    image: redis:3.0.6
+    image: redis:7
     restart: unless-stopped
     expose:
       - "6379"
@@ -74,13 +74,5 @@ services:
     volumes:
       - ./docker/data/redis:/data
     command: redis-server --appendonly yes
-  memcached:
-    container_name: memcached
-    image: memcached:1.4.23
-    restart: unless-stopped
-    expose:
-      - "11211"
-    ports:
-      - "11211:11211"
-    volumes:
-      - ./docker/data/memcached:/data
+    networks:
+      - lnmp-net

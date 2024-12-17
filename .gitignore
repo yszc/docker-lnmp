@@ -3,3 +3,4 @@ docker/log/*
 docker/config/nginx/conf.d/*
 www/*
 share/*
+**/.DS_Store

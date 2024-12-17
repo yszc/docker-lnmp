@@ -1,5 +1,15 @@
-FROM phpdockerio/php74-fpm
+FROM php:7.4-fpm-alpine
 
-RUN sed -i 's/\/\w\+.ubuntu.com/\/mirrors.163.com/gi' /etc/apt/sources.list
-
-RUN apt-get update && apt-get install -y php7.4-mysql php7.4-gd php7.4-redis php7.4-memcache
+RUN apk add --no-cache \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    zlib-dev \
+    libzip-dev \
+    autoconf \
+    g++ \
+    make \
+    && docker-php-ext-install gd pdo_mysql mysqli \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && rm -rf /tmp/* /var/cache/apk/*

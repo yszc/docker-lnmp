@@ -23,11 +23,4 @@ if ($result) {
 $redis->set('key1', 'val1');
 echo '<center><h2>Set Redis: key1 = ' . $redis->get('key1') . '</h2></center>' . PHP_EOL;
 
-$mm = memcache_connect('memcached' , 11211);
-if($mm){
-	echo '<center><h2>成功通过 PHP 连接到 memcached </h2></center>' . PHP_EOL;
-}
-$mm->set("key1" , 1);
-echo '<center><h2>Set mm: key1 = ' . $redis->get('key1') . '</h2></center>' . PHP_EOL;
-
 phpinfo();
