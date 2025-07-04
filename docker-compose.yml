@@ -6,7 +6,10 @@ networks:
 services:
   php5:
     container_name: php5
-    build: ./docker/files/php5
+    build:
+      context: ./docker/files/php5
+      args:
+        - PHP_ENV=${PHP_ENV:-development}
     tty: true
     restart: unless-stopped
     expose:
@@ -14,12 +17,17 @@ services:
     volumes:
       - ./www:/data/www
       - ./docker/log/php:/var/log/php-fpm
+    environment:
+      - PHP_ENV=${PHP_ENV:-development}
     networks:
       - lnmp-net
 
   php7:
     container_name: php7
-    build: ./docker/files/php7
+    build:
+      context: ./docker/files/php7
+      args:
+        - PHP_ENV=${PHP_ENV:-development}
     tty: true
     restart: unless-stopped
     expose:
@@ -27,12 +35,17 @@ services:
     volumes:
       - ./www:/data/www
       - ./docker/log/php:/var/log/php-fpm
+    environment:
+      - PHP_ENV=${PHP_ENV:-development}
     networks:
       - lnmp-net
 
   php8:
     container_name: php8
-    build: ./docker/files/php8
+    build:
+      context: ./docker/files/php8
+      args:
+        - PHP_ENV=${PHP_ENV:-development}
     tty: true
     restart: unless-stopped
     expose:
@@ -40,6 +53,8 @@ services:
     volumes:
       - ./www:/data/www
       - ./docker/log/php:/var/log/php-fpm
+    environment:
+      - PHP_ENV=${PHP_ENV:-development}
     networks:
       - lnmp-net
 

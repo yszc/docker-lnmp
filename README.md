@@ -66,6 +66,13 @@ Docker-LNMP
 # 容器编排
 docker-compose up -d
 docker-compose up -d php nginx
+
+# 指定PHP环境为生产环境
+PHP_ENV=production docker-compose up -d
+
+# 或者修改.env文件中的PHP_ENV值后启动
+# vim .env
+# docker-compose up -d
 ```
 ### 测试
 执行成功
@@ -113,6 +120,29 @@ Creating kibana ...
 	1. 将PHP项目放在www文件夹，注意修改代码配置中各种服务的host
 	1. nginx配置文件放在docker/config/nginx/conf.d下，注意修改fpm的host。
 	1. 亦可无须添加nginx配置直接通过localhost/dir访问
+
+### 环境变量配置
+
+项目现在支持通过环境变量来配置PHP容器的运行环境。主要通过以下方式实现：
+
+1. 项目根目录下的`.env`文件中设置默认环境变量：
+   ```
+   # PHP配置类型：development（开发环境）或 production（生产环境）
+   PHP_ENV=development
+   ```
+
+2. 在启动容器时通过命令行指定环境变量：
+   ```shell
+   # 启动开发环境
+   PHP_ENV=development docker-compose up -d
+   
+   # 启动生产环境
+   PHP_ENV=production docker-compose up -d
+   ```
+
+3. 环境变量的作用：
+   - `PHP_ENV=development`：使用PHP的开发环境配置（php.ini-development），提供更详细的错误信息和调试功能
+   - `PHP_ENV=production`：使用PHP的生产环境配置（php.ini-production），优化性能，关闭详细错误信息
 
 ### 可能遇到的问题
 

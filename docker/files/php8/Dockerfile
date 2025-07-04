@@ -8,6 +8,9 @@ LABEL description="PHP 8.3 FPM with extensions for web development"
 # 设置工作目录
 WORKDIR /var/www/html
 
+# 使用腾讯云镜像源
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.cloud.tencent.com/g' /etc/apk/repositories
+
 # 安装系统依赖
 RUN apk add --no-cache \
     # intl扩展依赖
@@ -18,6 +21,12 @@ RUN apk add --no-cache \
     libpng-dev \
     # ZIP扩展依赖
     libzip-dev \
+    # XML扩展依赖
+    libxml2-dev \
+    # CURL扩展依赖
+    curl-dev \
+    # BZ2扩展依赖
+    bzip2-dev \
     # 版本控制工具
     git \
     # 文本对比工具
@@ -39,16 +48,31 @@ RUN set -ex; \
         zip \
         opcache \
         pdo_mysql \
-        mysqli; \
+        mysqli \
+        bcmath \
+        bz2 \
+        calendar \
+        exif \
+        gettext \
+        sockets \
+        dba \
+        pcntl \
+        shmop; \
     
     # 安装PECL扩展
-    pecl install apcu; \
-    docker-php-ext-enable apcu; \
+    pecl install apcu redis igbinary msgpack; \
+    docker-php-ext-enable apcu redis igbinary msgpack; \
     
     # 清理缓存减小镜像体积
     rm -rf /tmp/* /var/cache/apk/*
 
 
-# 选择开发环境配置（注释/取消注释以切换生产环境配置）
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
-# RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+# Set environment variable for PHP configuration type (development/production)
+ARG PHP_ENV=development
+
+# Copy appropriate php.ini based on environment variable
+RUN if [ "$PHP_ENV" = "production" ]; then \
+        mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"; \
+    else \
+        mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
+    fi
