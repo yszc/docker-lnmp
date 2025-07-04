@@ -8,18 +8,25 @@ LABEL description="PHP 8.3 FPM with extensions for web development"
 # 设置工作目录
 WORKDIR /var/www/html
 
-# 使用腾讯云镜像源
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.cloud.tencent.com/g' /etc/apk/repositories
+# 使用阿里云镜像源（更稳定的选择）并确保启用community仓库
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
+    echo "https://mirrors.aliyun.com/alpine/v$(cat /etc/alpine-release | cut -d'.' -f1,2)/community" >> /etc/apk/repositories
+
+# 更新包索引并确保community仓库启用
+RUN apk update && apk upgrade
 
 # 安装系统依赖
 RUN apk add --no-cache \
     # intl扩展依赖
     icu-dev \
+    # gettext扩展依赖
+    gettext-dev \
     # GD图形库依赖
     freetype-dev \
     libjpeg-turbo-dev \
     libpng-dev \
-    # ZIP扩展依赖
+    # ZIP扩展依赖（确保从community仓库安装）
+    libzip \
     libzip-dev \
     # XML扩展依赖
     libxml2-dev \
@@ -27,6 +34,8 @@ RUN apk add --no-cache \
     curl-dev \
     # BZ2扩展依赖
     bzip2-dev \
+    # Sockets扩展依赖
+    linux-headers \
     # 版本控制工具
     git \
     # 文本对比工具
@@ -61,7 +70,7 @@ RUN set -ex; \
     
     # 安装PECL扩展
     pecl install apcu redis igbinary msgpack; \
-    docker-php-ext-enable apcu redis igbinary msgpack; \
+    docker-php-ext-enable apcu.so redis.so igbinary.so msgpack.so; \
     
     # 清理缓存减小镜像体积
     rm -rf /tmp/* /var/cache/apk/*
