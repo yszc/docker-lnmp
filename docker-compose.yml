@@ -17,6 +17,7 @@ services:
     volumes:
       - ./www:/data/www
       - ./docker/log/php:/var/log/php-fpm
+      - ./docker/config/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
     environment:
       - PHP_ENV=${PHP_ENV:-development}
     networks:
@@ -35,6 +36,7 @@ services:
     volumes:
       - ./www:/data/www
       - ./docker/log/php:/var/log/php-fpm
+      - ./docker/config/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
     environment:
       - PHP_ENV=${PHP_ENV:-development}
     networks:
@@ -53,6 +55,7 @@ services:
     volumes:
       - ./www:/data/www
       - ./docker/log/php:/var/log/php-fpm
+      - ./docker/config/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
     environment:
       - PHP_ENV=${PHP_ENV:-development}
     networks:
